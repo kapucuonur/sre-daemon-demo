@@ -182,15 +182,7 @@ Shipping a small model is only honest if you measure it. The rules:
 - **A model is switched only when it wins.** A candidate replaces the production model only after it beats it on the held-out set.
 - **Learning loop.** Verified diagnoses (your correct / wrong taps, or an outcome that held) and labels from a larger teacher model become training examples. A weekly job trains a candidate and evaluates it against the current model; the switch requires human approval.
 
-**Why production runs the base model today.** The first two fine-tunes did not beat it:
-
-| Model | Correct incident / non-incident call (of 68) | Root cause judged correct (of 68) | False alarms (of 22 non-incidents) |
-|---|---|---|---|
-| Base model (production) | 34 | 58 | 5 |
-| Fine-tune v1 | 46 | 51 | 22 |
-| Fine-tune v2 (+ synthetic data) | 22 | 53 | 0 |
-
-Fine-tune v1 called almost everything an incident, because its training labels were nearly all real incidents. Fine-tune v2 overcorrected and missed real ones. Neither is good enough to ship, so the base model stays. What is missing is balanced, verified data with both outcomes, which is what the live feedback loop collects. These results are from 21 October 2026 and will change as the data grows.
+**What this means in practice.** The fine-tunes trained so far did not beat the base model on the held-out set (the first called almost everything an incident, because its labels were nearly all real incidents; the second overcorrected), so production keeps the base model until a candidate wins. What improves it is balanced, verified data with both outcomes, which the live feedback loop collects.
 
 ## FAQ
 
